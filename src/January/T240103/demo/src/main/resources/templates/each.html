@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Item List</h1>
+<div>
+    <!--  <p>아이템 하나당 하나의 p</p> -->
+    <p th:each="item: ${itemList}">[[${itemList}]]</p>
+</div>
+
+<h1>Student List</h1>
+<!-- 한 명의 학생마다
+    <div>
+        <p>이름: 이름</p>
+        <p>이메일: 이메일</p>
+    </div> -->
+<!-- 만약 studentList가 비어있을 경우-->
+<div th:if="${studentList.isEmpty()}">
+    <p>No Student Here...</p>
+</div>
+<!-- 한명이라도 student가 있는 경우-->
+<div    th:unless="${studentList.isEmpty()}"
+        th:each="student: ${studentList}"
+>
+    <p>이름: [[${student.name}]]</p>
+    <p>이메일: [[${student.email}]]</p>
+</div>
+</body>
+</html>

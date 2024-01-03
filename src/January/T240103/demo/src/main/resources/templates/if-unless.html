@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>If Unless</title>
+</head>
+<body>
+<!-- 로그인 여부를 Model로 판단하고, -->
+<!-- 보이는 문구를 바꾸는 View -->
+<h1>Welcome.</h1>
+<div th:if="${isLoggedIn}">
+    <p>You are logged in.</p>
+</div>
+<div th:unless="${isLoggedIn}">
+    <p>Please log in.</p>
+</div>
+</body>
+</html>
