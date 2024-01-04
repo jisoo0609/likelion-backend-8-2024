@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+</head>
+<body>
+<!-- 사용자가 데이터를 입력할 수 있는 창구 -->
+<h1>Update: [[${student.id}]]. [[${student.name}]]</h1>
+<!-- 사옹자의 데이터를 받기 위한 form -->
+<form th:action="@{/update/{id}(id=${student.id})}" method="post">
+    <!-- 이름을 입력하기 위한 input -->
+    <label for="name-input">
+        <!-- 원본의 데이터를 기본값으로 설정해야 한다 -->
+        Name: <input id="name-input" name="name" th:value="${student.name}">
+    </label><br>
+    <!-- 이메일을 입력하기 위한 input -->
+    <label for="email-input">
+        Email: <input id="email-input" name="email" th:value="${student.email}">
+    </label><br>
+    <!-- 제출 버튼 -->
+    <input type="submit">
+</form>
+<!-- 수정중에 뒤로가면, 원래 데이터 읽기 창으로 -->
+<a th:href="@{/{id}(id=${student.id})}">Back</a>
+</body>
+</html>

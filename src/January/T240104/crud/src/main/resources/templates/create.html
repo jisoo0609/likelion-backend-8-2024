@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 사용자가 데이터를 읿력할 수 있는 창구 -->
+<h1>Create Student</h1>
+
+<!-- 사옹자의 데이터를 받기 위한 form -->
+<form action="/create" method="post">
+<!-- 이름을 입력하기 위한 input -->
+    <label for="name-input">
+        Name: <input id="name-input" name="name">
+    </label><br>
+<!-- 이메일을 입력하기 위한 input -->
+    <label for="email-input">
+        Email: <input id="email-input" name="email">
+    </label><br>
+    <!-- 제출 버튼 -->
+    <input type="submit">
+</form>
+<a href="/home">Back</a>
+</body>
+</html>

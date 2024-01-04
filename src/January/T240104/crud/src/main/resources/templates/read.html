@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Read One</title>
+</head>
+<body>
+    <!--  학생 번호(id)와 이름을  -->
+    <!--  id. name  -->
+    <h1>[[${student.id}]]. [[${student.name}]]</h1>
+    <!--  학생의 이메일을 출력  -->
+    <!--  이메일: email  -->
+    <p>이메일: [[${student.email}]]</p>
+    <!--  홈으로 가는 링크  -->
+    <a href="/home">Back</a>
+    <!--  수정하기로 가는 링크  -->
+    <a th:href="@{/update-view/{id}(id=${student.id})}">Edit</a>
+    <!--  삭제하기 버튼  -->
+    <!--  만약 데이터의 수정을 가할 수 있는 요청이라면  -->
+    <!--  메서드를 GET이 아니게 해주는 것이 원칙  -->
+    <form th:action="@{/delete/{id}(id=${student.id})}" method="post">
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>
