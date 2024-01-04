@@ -36,7 +36,7 @@ public class StudentController {
     public String create(
             @RequestParam("name") String name,
             @RequestParam("email") String email) {
-        StudentDto student = service.createStudent(name, email);
+        service.createStudent(name, email);
         return "redirect:/home";
     }
 

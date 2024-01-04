@@ -1,0 +1,17 @@
+spring:
+  # Spring boot 내부에서 데이터베이스 사용시 공유하는 설정
+  datasource:
+    # 예전에 JDBC Connection 만들때 제공했던 JDBC URL
+    url: jdbc:sqlite:db.sqlite
+    # 어떤 데이터베이스를 쓰느냐에 따라 어떤 Driver를 사용해야 하는지가 달라진다.
+    driver-class-name: org.sqlite.JDBC
+    # 다른 데이터베이스의 경우 아이디와 비밀번호가 필요하다.
+    # username: sa
+    # password: password
+    
+# MyBatis 관련 설정
+mybatis:
+  mapper-locations: "classpath:/mybatis/mapper/*.xml"
+  type-aliases-package: "com.example.crud.model"
+  configuration:
+    map-underscore-to-camel-case: true

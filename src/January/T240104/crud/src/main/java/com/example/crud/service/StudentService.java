@@ -1,6 +1,7 @@
 package com.example.crud.service;
 
 import com.example.crud.model.StudentDto;
+import com.example.crud.repository.StudentDao;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,22 +14,37 @@ public class StudentService {
     private Long nextId = 1L;
     // 데이터를 담기 위한 리스트
     private final List<StudentDto> studentList = new ArrayList<>();
-    // 사용자의 데이터를 받아
-    // 새로운 학생 객체를 생성해 리스트에 저장
-    public StudentDto createStudent(String name, String email) {
+
+    private final StudentDao dao;
+
+    public StudentService(StudentDao dao) {
+        this.dao = dao;
+    }
+
+    // 사용자의 데이터를 받아서 새로운 학생 객체를 생성해
+    // 리스트에 저장한다
+    /*public StudentDto createStudent(String name, String email) {
         StudentDto newStudent = new StudentDto(nextId, name, email);
         nextId++;
         studentList.add(newStudent);
         return newStudent;
+    }*/
+    public void createStudent(String name, String email) {
+        StudentDto dto = new StudentDto();
+        dto.setName(name);
+        dto.setEmail(email);
+        dao.createStudent(dto);
     }
 
     // 현재 등록된 모든 학생을 반환한다
     public List<StudentDto> readStudentAll() {
-        return studentList;
+//        return studentList;
+        return dao.readStudentsAll();
     }
 
     // id를 받아 하나의 학생 데이터를 반환한다
     // readStudent
+    /*
     public StudentDto readStudent(Long id) {
         // studentList의 데이터를 하나씩 확인해서
         // getId가 id인 데이터를 반환하고
@@ -39,6 +55,11 @@ public class StudentService {
         }
         // 없을 경우 null을 반환
         return null;
+    }
+     */
+
+    public StudentDto readStudent(Long id) {
+        return dao.readStudent(id);
     }
 
     // 어떤 학생의 정보를 바꿀건지를 나타내는 id
