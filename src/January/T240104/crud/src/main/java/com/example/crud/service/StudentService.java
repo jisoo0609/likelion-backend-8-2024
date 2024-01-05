@@ -2,12 +2,15 @@ package com.example.crud.service;
 
 import com.example.crud.model.StudentDto;
 import com.example.crud.repository.StudentDao;
+import com.example.crud.repository.StudentXMLDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StudentService {
     // 현재 몇번째 데이터가 입력되었는지
     // 나중에 데이터베이스의 PK 역할
@@ -15,11 +18,14 @@ public class StudentService {
     // 데이터를 담기 위한 리스트
     private final List<StudentDto> studentList = new ArrayList<>();
 
+    // StudentDao(MyBatis)를 추가해주고 주입받자.
     private final StudentDao dao;
+    private final StudentXMLDao xmlDao;
 
-    public StudentService(StudentDao dao) {
-        this.dao = dao;
-    }
+
+//    public StudentService(StudentDao dao) {
+//        this.dao = dao;
+//    }
 
     // 사용자의 데이터를 받아서 새로운 학생 객체를 생성해
     // 리스트에 저장한다
@@ -74,9 +80,15 @@ public class StudentService {
         }
         return null;
     }
+    /*
+    public void updateStudent(StudentDto dto) {
+        dao.updateStudent(dto);
+    }
+    */
 
     // id를 바탕으로 학생을 제거하는 메서드
     public void deleteStudent(Long id) {
+        // TODO StudentDao를 사용하게 변경
         // 리스트의 각 원소를 확인하면서
         int target = -1; // 몇 번째 원소를 저장하면 되는지
         // 주어진 id와 일치하는 원소가 있으면, 그 index를 저장하고

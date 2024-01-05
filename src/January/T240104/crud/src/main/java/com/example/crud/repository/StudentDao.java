@@ -44,4 +44,20 @@ public class StudentDao {
             return mapper.selectStudent(id);
         }
     }
+    
+    // TODO StudentMapper를 사용해 update하는 메서드
+    public void updateStudent(StudentDto dto) {
+        try (SqlSession session = sessionFactory.openSession()) {
+            StudentMapper mapper = session.getMapper(StudentMapper.class);
+            mapper.updateStudent(dto);
+        }
+    }
+
+    // TODO StudentMapper를 사용해 delete 하는 메서드
+    public void deleteStudent(Long id) {
+        try (SqlSession session = sessionFactory.openSession()) {
+            StudentMapper mapper = session.getMapper(StudentMapper.class);
+            mapper.deleteStudent(id);
+        }
+    }
 }
