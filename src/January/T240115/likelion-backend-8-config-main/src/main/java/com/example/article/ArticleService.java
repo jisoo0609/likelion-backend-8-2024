@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 // 비즈니스 로직을 담당하는 클래스이다.
@@ -25,13 +26,14 @@ public class ArticleService {
     }
 
     public List<ArticleDto> readAll() {
+        log.debug("call readAll()");
         List<ArticleDto> articleList = new ArrayList<>();
-//      for (Article article: repository.findAll()) {
-        for (Article article : repository.findAllByIdLessThanEqual(25L)) {
-            // 게시판에 늦게 작성된 게시글 부터 정렬됨 -> 위에서부터 50, 49, 48,...
+        for (Article article: repository.findAll()) {
+            log.trace(article.toString());
             articleList.add(ArticleDto.fromEntity(article));
         }
-
+        // 데이터가 어떻게 나왔는지
+        log.debug(articleList.toString());
         return articleList;
         // stream
         /* return repository.findAll().stream()
@@ -40,8 +42,15 @@ public class ArticleService {
     }
 
     public ArticleDto read(Long id) {
-        ArticleStoreSingleton store = ArticleStoreSingleton.getInstance();
-        Article article = repository.findById(id).orElseThrow();
+//        Article article = repository.findById(id).orElseThrow();
+        Optional<Article> optionalArticle = repository.findById(id);
+        // 만약 id에 해당하는 article이 없다.
+        if (optionalArticle.isEmpty()) {
+            log.warn(String.format("article with id: %d not present", id));
+            optionalArticle.orElseThrow();
+        }
+        Article article = optionalArticle.get();
+
         return ArticleDto.fromEntity(article);
     }
 

@@ -17,7 +17,9 @@ public class ArticleController {
 
     @GetMapping
     public String article(Model model) {
+        log.debug("request to /article");
         model.addAttribute("articles", articleService.readAll());
+
         return "index";
     }
 
