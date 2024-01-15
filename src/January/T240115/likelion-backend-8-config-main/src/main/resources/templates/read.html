@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${article.title}"></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body class="p-3">
+<div class="d-flex justify-content-between">
+  <h1 th:text="${article.title}"></h1>
+  <form th:action="@{/article/{id}/delete(id=${article.id})}" method="post">
+    <input type="submit" class="btn btn-danger" value="Delete">
+  </form>
+</div>
+<h2 th:text="${article.writer}"></h2>
+<hr>
+<p th:utext="${article.content}"></p>
+<hr>
+<p><a href="/article">Back</a> <a th:href="@{/article/{id}/edit(id=${article.id})}">Edit</a></p>
+<hr>
+<form th:action="@{/article/{id}/comment(id=${article.id})}" method="post">
+  <div class="mb-3">
+    <label for="writer-input" class="form-label">Writer</label>
+    <input type="text" name="writer" class="form-control" id="writer-input">
+  </div>
+  <div class="mb-3">
+    <label for="content-area" class="form-label">Content</label>
+    <textarea cols="30" rows="3" name="content" id="content-area" class="form-control"></textarea>
+  </div>
+  <input type="submit" class="btn btn-primary" value="Write">
+</form>
+<hr>
+<div th:if="${article.comments.isEmpty()}"><h3>No Comments</h3></div>
+<div th:unless="${article.comments.isEmpty()}" th:each="comment: ${article.comments}">
+  <div class="d-flex justify-content-between">
+    <h5 th:text="${comment.writer}"></h5>
+    <div class="d-flex">
+      <a th:href="@{/article/{aId}/comment/{cId}/edit(aId=${article.id},cId=${comment.id})}" class="btn btn-warning me-2">Edit</a>
+      <form th:action="@{/article/{aId}/comment/{cId}/delete(aId=${article.id},cId=${comment.id})}" method="post">
+        <input type="submit" class="btn btn-danger" value="Delete">
+      </form>
+    </div>
+  </div>
+  <p th:text="${comment.content}"></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

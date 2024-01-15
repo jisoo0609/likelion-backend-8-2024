@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Comment for: [[${article.title}]]</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body class="p-3">
+<h1>Edit Comment for: "[[${article.title}]]"</h1>
+<a th:href="@{/article/{aId}(aId=${article.id})}">Back</a>
+<hr>
+<h4>Original: </h4>
+<div>
+  <h5 th:text="${comment.writer}"></h5>
+  <p th:text="${comment.content}"></p>
+</div>
+<hr>
+<form th:action="@{/article/{aId}/comment/{cId}/update(aId=${article.id},cId=${comment.id})}" method="post">
+  <input type="hidden" name="writer" class="form-control" id="writer-input" th:value="${comment.writer}">
+  <div class="mb-3">
+    <label for="content-area" class="form-label">Content</label>
+    <textarea cols="30" rows="3" name="content" id="content-area" class="form-control">[[${comment.content}]]</textarea>
+  </div>
+  <input type="submit" class="btn btn-primary" value="Write">
+</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>
