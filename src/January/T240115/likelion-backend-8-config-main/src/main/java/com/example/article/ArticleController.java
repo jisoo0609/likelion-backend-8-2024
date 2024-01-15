@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+// 요청을 받는 클래스이다.
 @Controller
 @RequestMapping("article")
 @RequiredArgsConstructor

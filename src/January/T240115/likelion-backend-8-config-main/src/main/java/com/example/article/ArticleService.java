@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+// 비즈니스 로직을 담당하는 클래스이다.
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
