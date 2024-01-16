@@ -49,6 +49,7 @@ public class StudentController {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setMessage("등록 완료");
         HttpHeaders headers = new HttpHeaders();
+        headers.add("x-likelion-response", "hello");
         return new ResponseEntity<>(
                 responseDto, HttpStatus.CREATED);
     }
