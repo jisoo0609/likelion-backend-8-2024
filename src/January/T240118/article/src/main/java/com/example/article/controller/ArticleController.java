@@ -1,4 +1,4 @@
-package com.example.article;
+package com.example.article.controller;
 // CRUD를 위한 URL
 /*
 POST /articles -> crate()
@@ -8,6 +8,7 @@ PUT /articles/{id} -> update()
 DELETE /articles/{id} -> delete
  */
 
+import com.example.article.service.ArticleService;
 import com.example.article.dto.ArticleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

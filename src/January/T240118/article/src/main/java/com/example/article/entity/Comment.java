@@ -5,35 +5,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-/*
-CREATE TABLE article (
-
-)
- */
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor
-public class Article {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter
-    private String title;
+
     @Setter
     private String content;
     @Setter
     private String writer;
 
-    @OneToMany
-    private List<Comment> comments = new ArrayList<>();
+    @Setter
+    @ManyToOne
+    private Article article;
 
-    public Article(String title, String content, String writer) {
-        this.title = title;
+    public Comment(String content, String writer, Article article) {
         this.content = content;
         this.writer = writer;
+        this.article = article;
     }
 }

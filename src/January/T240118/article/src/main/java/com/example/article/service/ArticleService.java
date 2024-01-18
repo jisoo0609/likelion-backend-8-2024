@@ -1,4 +1,4 @@
-package com.example.article;
+package com.example.article.service;
 
 import com.example.article.dto.ArticleDto;
 import com.example.article.entity.Article;
