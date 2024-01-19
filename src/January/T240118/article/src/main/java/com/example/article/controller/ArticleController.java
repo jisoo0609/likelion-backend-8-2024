@@ -8,13 +8,13 @@ PUT /articles/{id} -> update()
 DELETE /articles/{id} -> delete
  */
 
+import com.example.article.entity.Article;
 import com.example.article.service.ArticleService;
 import com.example.article.dto.ArticleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,10 +27,32 @@ public class ArticleController {
     public ArticleDto create(@RequestBody ArticleDto dto) {
        return service.create(dto);
     }
-
+    /*
     @GetMapping
     public List<ArticleDto> readAll() {
         return service.readAll();
+    }
+    */
+    /*
+    @GetMapping
+    public List<ArticleDto> readAllPaged(
+            @RequestParam(value = "page", defaultValue = "1")
+            Integer page,
+            @RequestParam(value = "ilmit", defaultValue = "20")
+            Integer limit
+    ) {
+        return service.readAllPaged(page, limit);
+    }
+    */
+
+    @GetMapping
+    public Page<Article> readAllPagination(
+            @RequestParam(value = "page", defaultValue = "1")
+            Integer page,
+            @RequestParam(value = "limit", defaultValue = "20")
+            Integer limit
+    ) {
+        return service.readAllPagination(page, limit);
     }
 
     @GetMapping("/{id}")
