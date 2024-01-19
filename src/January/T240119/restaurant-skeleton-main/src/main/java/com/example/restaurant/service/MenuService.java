@@ -1,15 +1,16 @@
-package com.example.restaurant;
+package com.example.restaurant.service;
 
 import com.example.restaurant.dto.MenuDto;
 import com.example.restaurant.entity.Menu;
 import com.example.restaurant.entity.Restaurant;
+import com.example.restaurant.repository.MenuRepository;
+import com.example.restaurant.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -1,5 +1,6 @@
-package com.example.restaurant;
+package com.example.restaurant.controller;
 
+import com.example.restaurant.service.RestaurantService;
 import com.example.restaurant.dto.RestaurantDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

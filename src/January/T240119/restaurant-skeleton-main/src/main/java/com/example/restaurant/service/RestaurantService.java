@@ -1,14 +1,14 @@
-package com.example.restaurant;
+package com.example.restaurant.service;
 
 import com.example.restaurant.dto.RestaurantDto;
 import com.example.restaurant.entity.Restaurant;
+import com.example.restaurant.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +21,10 @@ public class RestaurantService {
 
     // 사용자의 데이터를 가지고 새로운 식당을 만듦
     public RestaurantDto create(RestaurantDto dto) {
+        // 만약 닫는 시간이 오픈시간을 초과하면 잘못된 입력
+        if (dto.getCloseHour() > dto.getOpenHour())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         Restaurant newRestaurant = new Restaurant(
                 dto.getName(),
                 dto.getCategory(),
