@@ -54,7 +54,7 @@ public class ArticleService {
 
         // 2. Query Method를 이용해 특정 개수 이후의
         // 개시글만 조회하게 한다
-        List<Article> articles = repository.findTopBy20OrderByIdDesc();
+        List<Article> articles = repository.findTop20ByOrderByIdDesc();
         for (Article entity : articles) {
             articleDtoList.add(ArticleDto.fromEntity(entity));
         }
