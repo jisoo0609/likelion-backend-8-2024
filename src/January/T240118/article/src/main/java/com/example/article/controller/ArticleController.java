@@ -46,7 +46,7 @@ public class ArticleController {
         return service.readAllPaged(page, limit);
     }
     */
-
+    /*
     @GetMapping
     public Page<Article> readAllPagination(
             @RequestParam(value = "page", defaultValue = "1")
@@ -56,7 +56,7 @@ public class ArticleController {
     ) {
         return service.readAllPagination(page, limit);
     }
-
+    */
     @GetMapping("/{id}")
     public ArticleDto read(
             @PathVariable("id")

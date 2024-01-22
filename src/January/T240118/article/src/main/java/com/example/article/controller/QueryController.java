@@ -1,5 +1,7 @@
 package com.example.article.controller;
 
+import com.example.article.service.ArticleService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,7 +12,10 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class QueryController {
+    private final ArticleService service;
+
     // http://localhost:8080/query-test?name=gildong
     @GetMapping
     public void queryParams(@RequestParam("name") String name,
@@ -51,7 +56,7 @@ public class QueryController {
 
     // GET /query-page?page=1&perpage=25
     @GetMapping("/query-page")
-    public Map<String, Object> queryPage(
+    public Object queryPage(
             // defaultValue 문자열로 전달해야 함
             @RequestParam(value = "page", defaultValue = "1")
             Integer page,
@@ -60,10 +65,9 @@ public class QueryController {
     ) {
         log.info("page: "+page);
         log.info("perpage:"+ perPage);
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("page",page);
-        responseBody.put("perPage", perPage);
-        return responseBody;
+        service.readTop20();
+        service.readArticlePagedList();
+        return service.readArticlePaged(page, perPage);
     }
 
     // GET /query-search?q=keyword&cat=writer
