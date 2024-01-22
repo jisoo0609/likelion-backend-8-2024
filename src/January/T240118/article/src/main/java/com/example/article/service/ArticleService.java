@@ -101,4 +101,13 @@ public class ArticleService {
             repository.deleteById(id);
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    public List<ArticleDto> readTop20() {
+        List<ArticleDto> articleDtoList = new ArrayList<>();
+        List<Article> articleList = repository.findTop20ByOrderByIdDesc();
+        for (Article entity : articleList) {
+            articleDtoList.add(ArticleDto.fromEntity(entity));
+        }
+        return articleDtoList;
+    }
 }

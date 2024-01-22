@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/articles")
@@ -27,12 +29,12 @@ public class ArticleController {
     public ArticleDto create(@RequestBody ArticleDto dto) {
        return service.create(dto);
     }
-    /*
+
     @GetMapping
     public List<ArticleDto> readAll() {
         return service.readAll();
     }
-    */
+
     /*
     @GetMapping
     public List<ArticleDto> readAllPaged(
