@@ -4,6 +4,7 @@ import com.example.contents.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -27,11 +28,14 @@ public class UserController {
         return service.readUserByUsername(username);
     }
 
-    @PutMapping("/{userId}/avartar")
+    @PutMapping("/{userId}/avatar")
     public UserDto avatar(
             @PathVariable("userId")
-            String userId
+            Long userId,
+            @RequestParam("image")
+            MultipartFile imageFile
+
     ) {
-        return service.updateUserAvatar(null, null);
+        return service.updateUserAvatar(userId, imageFile);
     }
 }
