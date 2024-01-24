@@ -17,10 +17,11 @@ public class UserDto {
     @NotNull
     @Size(min = 8, message = "8자는 넣어주세요.")
     private String username;
-    @Email
+    // message를 기록하면 예외에 기록되는 문구를 바꿀 수 있다.
+    @Email(message = "Email을 넣어주세요.")
     private String email;
     // 14세 이상만 받아준다.
-    @Min(14)
+    @Min(value = 14, message = "만 14세 이하는 부모님 동의가 필요합니다.")
     private Integer age;
     // 날짜를 나타내는 Java 클래스 ('YYYY-MM-DD')
     @Future

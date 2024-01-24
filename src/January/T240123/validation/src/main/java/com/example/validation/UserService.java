@@ -9,11 +9,10 @@ import org.springframework.validation.annotation.Validated;
 @Service
 @Validated
 public class UserService {
-    public void pringAge(
+    public void printAge(
             @Min(19)
             Integer age
     ) {
-
         log.info(age.toString());
     }
 }
