@@ -6,6 +6,8 @@ public class BuilderMain {
         // 전체 필드를 받아서 생성해주는 생성자가 있을 때
         // username, email, firstName, lastName 만 넣어서 초기화를 하고 싶다면
         // gildong, gildong@gmail.com, Gildong, Hong
+
+        /*
         User newUSer = new User(
             null, "gildong", null, "gildong@gmail.com", null, "Gildong", "Hong", null
         );
@@ -27,7 +29,7 @@ public class BuilderMain {
         User.UserBuilder c = b.email("gildong@gmail.com");
          */
 
-        User newUser = userBuilder
+        User newUser = User.builder()
                 .id(1L)
                 .username("gildong")
                 .email("gildong@gmail.com")

@@ -1,5 +1,10 @@
 package com.example.contents.builder;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+@Builder
+@AllArgsConstructor
 public class User {
     private Long id;
     private String username;
@@ -10,6 +15,7 @@ public class User {
     private String lastName;
     private String status;
 
+    /*
     public static UserBuilder builder() {
         return new UserBuilder();
     }
@@ -132,4 +138,5 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
+     */
 }
