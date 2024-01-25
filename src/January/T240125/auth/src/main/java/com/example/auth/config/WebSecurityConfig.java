@@ -26,7 +26,7 @@ public class WebSecurityConfig {
                         // /no-auth로 오는 요청은 모두 허가
                         auth -> auth
                                 // 어떤 경로에 대한 설정인지
-                                .requestMatchers("/no-auth")
+                                .requestMatchers("/no-auth", "/home")
                                 // 이 경로에 도달할 수 있는 사람에 대한 설정(모두)
                                 .permitAll()
                                 .requestMatchers("/users/my-profile")

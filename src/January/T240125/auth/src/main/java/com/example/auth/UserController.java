@@ -2,10 +2,12 @@ package com.example.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +29,13 @@ public class UserController {
 
     // 로그인 한 후에 내가 누군지 확인하기 위한
     @GetMapping("/my-profile")
-    public String myProfile() {
+    public String myProfile(
+            Authentication authentication,
+            Model model
+    ) {
+        model.addAttribute("username", authentication.getName());
+        log.info(authentication.getName());
+        log.info(((User)authentication.getPrincipal()).getUsername());
         return "my-profile";
     }
 
