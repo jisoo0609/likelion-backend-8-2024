@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -33,20 +35,18 @@ public class UserServiceTests {
     @DisplayName("UserDto로 사용자 생성")
     public void testCreateUser() {
         // given
-        // 1. userRepository가 특정 User를 전달받을것을 가정한다.
-        String username = "edujeeho";
-        // userRepository가 입력받을 user
-        User userIn = new User(username, null, null, null);
+        // 1. userService가 받을 UserDto의 username
+        String username = "gildong";
 
-        // 2. userRepository가 반환할 user
+        // 2. userRepository가 반환할 user, UserDto의 username과 동일할것이라 가정
         User userOut = new User(username, null, null, null);
-        userOut.setId(1L);
 
-        // 3. userRepository.save(userIn)의 결과를 userOut으로 설정
-        when(userRepository.save(userIn))
+        // 3. userRepository.save(User)의 결과를 userOut으로 설정
+        when(userRepository.save(any()))
                 .thenReturn(userOut);
-        when(userRepository.existsByUsername(username))
-                .thenReturn(false);
+        // 정의하지 않아도, boolean 반환값의 기본값은 false이다.
+//        when(userRepository.existsByUsername(username))
+//                .thenReturn(false);
 
         // when - UserDto를 전달한다.
         UserDto userDto = new UserDto(
@@ -56,9 +56,35 @@ public class UserServiceTests {
                 null,
                 null
         );
+        // userService 내부에서 새 User 객체를 만들고,
         UserDto result = userService.create(userDto);
 
         // then - 돌아온 result를 검사한다.
+        // 정상적으로 동작하면 userService가 반환한 UserDto는
+        // 동일한 username을 가진 UserDto를 반환한다.
+        assertEquals(username, result.getUsername());
+    }
+
+    // readUserByUsername
+    @Test
+    @DisplayName("username으로 UserDto 반환")
+    public void testReadUserByUsername() {
+        // given
+        // 특정 username을 기준으로
+        String username = "gildong.dev";
+        User user = new User(
+                username, null, null, null);
+        // findByUsername은 해당 username을 가진 entity를 반환한다.
+        when(userRepository.findByUsername(username))
+                .thenReturn(Optional.of(user));
+
+        // when
+        // userService는 userName을 바탕으로 userRepository의 결과를
+        // DTO의 형태로 반환한다.
+        UserDto result = userService.readUserByUsername(username);
+
+        // then
+        // 둘의 username이 일치하는지 확인
         assertEquals(username, result.getUsername());
     }
 }
