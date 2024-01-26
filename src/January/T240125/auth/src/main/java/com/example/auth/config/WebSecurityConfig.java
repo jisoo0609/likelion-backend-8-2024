@@ -67,7 +67,9 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    // JpaUserDetailsManager 생성 후엔 관리해야하는 @Bean 두개가 되어버림
+    // @Bean 주석처리해서 제외시켜야하 함
+//    @Bean
     public UserDetailsManager userDetailsManager(
             PasswordEncoder passwordEncoder
     ) {

@@ -1,5 +1,6 @@
 package com.example.auth;
 
+import com.example.auth.entity.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -21,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
     private final UserDetailsManager manager;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationFacade authFacade;
 
     @GetMapping("/home")
     public String home() {
         log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+        log.info(authFacade.getAuth().getName());
         return "index";
     }
 
@@ -41,7 +44,8 @@ public class UserController {
     ) {
         model.addAttribute("username", authentication.getName());
         log.info(authentication.getName());
-        log.info(((User) authentication.getPrincipal()).getPassword());
+//        log.info(((User) authentication.getPrincipal()).getPassword());
+        log.info(((CustomUserDetails) authentication.getPrincipal()).getPhone());
         return "my-profile";
     }
 
@@ -61,7 +65,11 @@ public class UserController {
             String passwordCheck
     ) {
         if (password.equals(passwordCheck))
-            manager.createUser(User.withUsername(username)
+            /*manager.createUser(User.withUsername(username)
+                    .password(passwordEncoder.encode(password))
+                    .build());*/
+            manager.createUser(CustomUserDetails.builder()
+                    .username(username)
                     .password(passwordEncoder.encode(password))
                     .build());
 
