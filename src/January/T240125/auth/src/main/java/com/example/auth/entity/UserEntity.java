@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @Entity
-@Table(name = "user table")
+@Table(name = "user_table")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
@@ -20,6 +20,7 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String username;
     private String password;
+
     private String email;
     private String phone;
 }
