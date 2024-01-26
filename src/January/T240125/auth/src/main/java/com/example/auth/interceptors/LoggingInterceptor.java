@@ -8,6 +8,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collection;
 import java.util.Enumeration;
 
 // 어떤 헤더가 있었는지 로그로 남기기
@@ -21,7 +22,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
             HttpServletRequest request,
             // 응답
             HttpServletResponse response,
-            // 실제로 요청을 처리할 REquestMapping을 나타내는 메서드 객체
+            // 실제로 요청을 처리할 RequestMapping을 나타내는 메서드 객체
             Object handler
     ) throws Exception {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -38,8 +39,19 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     // HandlerMethod(RequestMapping)이 처리가 되고 응답이 보내지기 전 실행
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    public void postHandle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler,
+            ModelAndView modelAndView
+    ) throws Exception {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        log.info("post handling of {}", handlerMethod.getMethod().getName());
+        Collection<String> headerNames = response.getHeaderNames();
+        for (String headerName : headerNames) {
+            log.info("{}, {}", headerName, request.getHeader(headerName));
+        }
+        log.info("===== end of post handling");
     }
 
     // 요청이 처리가 완전히 마무리 되었을 때 실행
