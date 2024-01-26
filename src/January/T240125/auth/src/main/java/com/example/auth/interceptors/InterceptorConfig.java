@@ -11,7 +11,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     private final LoggingInterceptor loggingInterceptor;
 
     @Override
-    // Interceptor를 등록하기 위한 메서드
+    // 인터셉터를 등록하기 위한 메서드
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 // 어떤 인터셉터를
