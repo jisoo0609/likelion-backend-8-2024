@@ -79,6 +79,4 @@ public class WebSecurityConfig {
         // 메모리 기반 사용자 관리 클래스 + 사용자 1
         return new InMemoryUserDetailsManager(user1);
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.example.auth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -15,12 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
-@RequestMapping("users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    // @Bean으로 등록되어있어 컨트롤러에서 가져와서 사용 가능
     private final UserDetailsManager manager;
     private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/home")
+    public String home() {
+        log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "index";
+    }
 
     @GetMapping("/login")
     public String loginForm() {
@@ -35,11 +41,11 @@ public class UserController {
     ) {
         model.addAttribute("username", authentication.getName());
         log.info(authentication.getName());
-        log.info(((User)authentication.getPrincipal()).getUsername());
+        log.info(((User) authentication.getPrincipal()).getPassword());
         return "my-profile";
     }
 
-    // 회원가이 확인
+    // 회원가입 화면
     @GetMapping("/register")
     public String signUpForm() {
         return "register-form";
@@ -54,13 +60,12 @@ public class UserController {
             @RequestParam("password-check")
             String passwordCheck
     ) {
-        // TODO password == passwordCheck
         if (password.equals(passwordCheck))
-            // TODO 주어진 정보를 바탕으로 새로운 사용자 생성
             manager.createUser(User.withUsername(username)
                     .password(passwordEncoder.encode(password))
                     .build());
-        // 회원가입 성공 시에 로그인 페이지로 이동
+
+        // 회원가입 성공 후 로그인 페이지로
         return "redirect:/users/login";
     }
 }
