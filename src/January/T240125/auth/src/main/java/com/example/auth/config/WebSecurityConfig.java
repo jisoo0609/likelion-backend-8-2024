@@ -34,7 +34,9 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/no-auth",
                                 "/users/home",
-                                "/tests"
+                                "/tests",
+                                "/token/issue",
+                                "/token/validate"
                         )
                         // 이 경로에 도달할 수 있는 사람에 대한 설정(모두)
                         .permitAll()
