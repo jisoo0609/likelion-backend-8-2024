@@ -25,6 +25,7 @@ public class AllAuthenticatedFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         log.info("try all auth filter");
+        // TODO 여기
         // 헤더에 `x-likelion-all-auth: true`가 포함된 요청은 로그인 한 요청이다.
         String header = request.getHeader("x-likelion-all-auth");
         if (header != null) {
@@ -47,6 +48,7 @@ public class AllAuthenticatedFilter extends OncePerRequestFilter {
         } else {
             log.info("all auth required header is absent");
         }
+        // TODO 여기까지
         // 필터를 실행을 해주어야 한다. 실패하든 말든.
         filterChain.doFilter(request, response);
     }
