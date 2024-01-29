@@ -1,7 +1,6 @@
-package com.example.auth.filters;
+package com.example.auth.jwt;
 
 import com.example.auth.entity.CustomUserDetails;
-import com.example.auth.jwt.JwtTokenUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,15 +12,26 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtils jwtTokenUtils;
+    // 사용자 정보를 찾기위한 UserDetailsService 또는 Manager
+    private final UserDetailsManager manager;
+
+    public JwtTokenFilter(
+            JwtTokenUtils jwtTokenUtils,
+            UserDetailsManager manager
+    ) {
+        this.jwtTokenUtils = jwtTokenUtils;
+        this.manager = manager;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -31,11 +41,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         log.debug("try jwt filter");
         // 1. Authorization 헤더를 회수
-        // String authHeader = request.getHeader("Authorization");
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
+        String authHeader
+                // = request.getHeader("Authorization");
+                = request.getHeader(HttpHeaders.AUTHORIZATION);
         // 2. Authorization 헤더가 존재하는지 + Bearer로 시작하는지
-        if (authHeader != null && authHeader.startsWith("Bearer")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.split(" ")[1];
             // 3. Token이 유효한 토큰인지
             if (jwtTokenUtils.validate(token)) {
@@ -45,27 +55,27 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 String username = jwtTokenUtils
                         .parseClaims(token)
                         .getSubject();
-
                 // 인증 정보 생성
-                AbstractAuthenticationToken authenticationToken =
+                AbstractAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                CustomUserDetails.builder()
-                                        .username(username)
-                                        .build(),
+//                                CustomUserDetails.builder()
+//                                        .username(username)
+//                                        .build(),
+                                // manager에서 실제 사용자 정보 조회
+                                manager.loadUserByUsername(username),
                                 token, new ArrayList<>()
                         );
                 // 인증 정보 등록
-                context.setAuthentication(authenticationToken);
+                context.setAuthentication(authentication);
                 SecurityContextHolder.setContext(context);
                 log.info("set security context with jwt");
-            } else {
+            }
+            else {
                 log.warn("jwt validation failed");
             }
         }
-
         // 5. 다음 필터 호출
-        // doFilter를 호출하지 않으면 Controller까지 요청이 도달하지 못한다
+        // doFilter를 호출하지 않으면 Controller까지 요청이 도달하지 못한다.
         filterChain.doFilter(request, response);
-
     }
 }
