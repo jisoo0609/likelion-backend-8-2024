@@ -15,4 +15,19 @@ public class AuthorizationController {
         return "userRole";
     }
 
+    // ROLE_ADMIN을 가졌을 때 요청 가능
+    @GetMapping("/admin-role")
+    public String adminRole() {
+        return "adminRole";
+    }
+
+    @GetMapping("/read-authority")
+    public String readAuthority() {
+        return "readAuthority";
+    }
+
+    @GetMapping("/write-authority")
+    public String writeAuthority() {
+        return "writeAuthority";
+    }
 }

@@ -50,6 +50,20 @@ public class WebSecurityConfig {
                                 "/users/register"
                         )
                         .anonymous()
+                        // ROLE에 따른 접근 설정
+                        .requestMatchers("/auth/user-role")
+                        .hasRole("USER")
+
+                        .requestMatchers("/auth/admin-role")
+                        .hasRole("ADMIN")
+
+                        // AUTHORITY에 따른 접근 설정
+                        .requestMatchers("/auth/read-authority")
+                        .hasAnyAuthority("READ_AUTHORITY")
+
+                        .requestMatchers("/auth/write-authority")
+                        .hasAnyAuthority("WRITE_AUTHORITY")
+
                         .anyRequest()
                         .permitAll()
                 )

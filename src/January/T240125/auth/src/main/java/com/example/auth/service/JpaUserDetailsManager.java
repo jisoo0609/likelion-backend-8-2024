@@ -41,7 +41,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(passwordEncoder.encode("password"))
                 .email("admin@gmail.com")
                 .phone("01012345678")
-                .authorities("ROLE_USER, ROLE_ADMIN")
+                .authorities("ROLE_ADMIN,WRITE_AUTHORITY")
                 .build());
     }
 
