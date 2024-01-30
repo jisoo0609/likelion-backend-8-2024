@@ -6,6 +6,7 @@ import com.example.auth.service.JpaUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 // @Bean을 비롯해서 여러 설정을 하기 위한 Bean 객체
 @Configuration
@@ -43,8 +45,16 @@ public class WebSecurityConfig {
                                 "/token/validate"
                         )
                         .permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/articles")
+                        .permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/articles")
+                        .authenticated()
+
                         .requestMatchers("/users/my-profile")
                         .authenticated()
+
                         .requestMatchers(
                                 "/users/login",
                                 "/users/register"
@@ -52,17 +62,17 @@ public class WebSecurityConfig {
                         .anonymous()
                         // ROLE에 따른 접근 설정
                         .requestMatchers("/auth/user-role")
-                        .hasRole("USER")
+                        .hasAnyRole("USER", "ADMIN")
 
                         .requestMatchers("/auth/admin-role")
                         .hasRole("ADMIN")
 
                         // AUTHORITY에 따른 접근 설정
                         .requestMatchers("/auth/read-authority")
-                        .hasAnyAuthority("READ_AUTHORITY")
+                        .hasAnyAuthority("READ_AUTHORITY", "WRITE_AUTHORITY")
 
                         .requestMatchers("/auth/write-authority")
-                        .hasAnyAuthority("WRITE_AUTHORITY")
+                        .hasAuthority("WRITE_AUTHORITY")
 
                         .anyRequest()
                         .permitAll()
