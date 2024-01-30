@@ -29,10 +29,19 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         this.userRepository = userRepository;
         // 오로지 테스트 목적의 사용자를 추가하는 용도
         createUser(CustomUserDetails.builder()
-                .username("user1")
+                .username("user")
                 .password(passwordEncoder.encode("password1"))
                 .email("user1@gmail.com")
                 .phone("01012345678")
+                .authorities("ROLE_USER")
+                .build());
+
+        createUser(CustomUserDetails.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("password"))
+                .email("admin@gmail.com")
+                .phone("01012345678")
+                .authorities("ROLE_USER, ROLE_ADMIN")
                 .build());
     }
 
@@ -52,6 +61,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(userEntity.getPassword())
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
+                .authorities(userEntity.getAuthorities())
                 .build();
         /*
         return User.withUsername(username)
@@ -75,6 +85,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                     .password(userDetails.getPassword())
                     .email(userDetails.getEmail())
                     .phone(userDetails.getPhone())
+                    .authorities(userDetails.getRawAuthorities())
                     .build();
             userRepository.save(newUser);
         } catch (ClassCastException e) {
