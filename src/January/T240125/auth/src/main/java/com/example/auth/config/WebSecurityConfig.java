@@ -166,10 +166,10 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }*/
 
-//    @Bean
+    //    @Bean
     // 사용자 정보 관리 클래스
     public UserDetailsManager userDetailsManager(
-        PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder
     ) {
         // 사용자 1
         UserDetails user1 = User.withUsername("user1")

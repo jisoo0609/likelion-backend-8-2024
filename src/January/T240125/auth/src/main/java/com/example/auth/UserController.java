@@ -45,6 +45,7 @@ public class UserController {
         model.addAttribute("username", authentication.getName());
         log.info(authentication.getName());
 //        log.info(((User) authentication.getPrincipal()).getPassword());
+        log.info(((CustomUserDetails) authentication.getPrincipal()).getPassword());
         log.info(((CustomUserDetails) authentication.getPrincipal()).getPhone());
         return "my-profile";
     }
