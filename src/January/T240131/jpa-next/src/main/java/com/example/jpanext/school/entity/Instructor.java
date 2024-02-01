@@ -18,6 +18,7 @@ public class Instructor {
     @Setter
     private String name;
 
-    @OneToMany(mappedBy = "advisor")
+    // cascade: 영속성 전이
+    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL)
     private final List<Student> advisingStudents = new ArrayList<>();
 }
