@@ -1,5 +1,7 @@
 package com.example.jpanext.school;
 
+import com.example.jpanext.school.dto.ILCountDto;
+import com.example.jpanext.school.dto.ILCountProjection;
 import com.example.jpanext.school.entity.AttendingLectures;
 import com.example.jpanext.school.entity.Instructor;
 import com.example.jpanext.school.entity.Lecture;
@@ -33,6 +35,36 @@ public class SchoolController {
     private final LectureRepository lectureRepository;
     private final AttendingLectureRepo attendingLectureRepo;
     private final InstructorRepository instructorRepository;
+
+    @GetMapping("test-agg")
+    public String testAggregate() {
+        List<Object[]> results =
+                instructorRepository.selectILCountObject();
+        for (Object[] row: results) {
+            Instructor instructor = (Instructor) row[0];
+//            log.info(String.valueOf(row[1].getClass()));
+            Long count = (Long) row[1];
+            log.info("{}: {}", instructor.getName(), count);
+        }
+
+        List<ILCountDto> resultDtos =
+                instructorRepository.selectILCountDto();
+        for (ILCountDto dto: resultDtos) {
+            log.info("{}: {}",
+                    dto.getInstructor().getName(),
+                    dto.getCount());
+        }
+
+        List<ILCountProjection> resultProjs =
+                instructorRepository.selectILCountProj();
+        for (ILCountProjection projection: resultProjs) {
+            log.info("{}: {}",
+                    projection.getInstructor().getName(),
+                    projection.getLectureCount());
+        }
+
+        return "done";
+    }
 
     @GetMapping("test-query")
     public String testQuery() {
