@@ -29,6 +29,33 @@ public class SchoolController {
     private final AttendingLectureRepo attendingLectureRepo;
     private final InstructorRepository instructorRepository;
 
+    @GetMapping("test-query")
+    public String testQuery() {
+        log.info("JPQL Sample");
+        lectureRepository.findLecturesBeforeLunch().forEach(lecture ->
+                log.info("{}: {}", lecture.getName(), lecture.getStartTime()));
+        lectureRepository.findLecturesBeforeLunchNative().forEach(lecture ->
+                log.info("{}: {}", lecture.getName(), lecture.getStartTime()));
+
+        log.info("=================== indexed parameters");
+        lectureRepository.findLecturesByTime(10, 13).forEach(lecture ->
+                log.info("{}: {} -> {}",
+                        lecture.getName(),
+                        lecture.getStartTime(),
+                        lecture.getEndTime()));
+
+        log.info("=================== named parameters");
+        lectureRepository.findLecturesByTimeNamed(10, 13).forEach(lecture ->
+                log.info("{}: {} -> {}",
+                        lecture.getName(),
+                        lecture.getStartTime(),
+                        lecture.getEndTime()));
+
+
+        return "done";
+    }
+
+
     // CascadeType.PERSIST일때만 전부 저장됨
     @GetMapping("cascade-persist")
     public String cascadePersist() {
@@ -90,7 +117,7 @@ public class SchoolController {
     }
 
     @GetMapping("many-to-many")
-    public String test() {
+    public String manyToMany() {
         Student alex = Student.builder()
                 .name("alex")
                 .build();
