@@ -1,5 +1,6 @@
 package com.example.jpanext.school.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Setter
     private String name;
     @Setter
@@ -23,6 +25,11 @@ public class Lecture {
     private Integer startTime;
     @Setter
     private Integer endTime;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "instructor_id")
+    private Instructor instructor;
 
     // 상세설정은 mappedBy가 가르키는 속성에 따른다.
     @ManyToMany(mappedBy = "attending")
