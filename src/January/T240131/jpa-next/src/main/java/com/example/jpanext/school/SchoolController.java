@@ -15,9 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,7 +38,8 @@ public class SchoolController {
     private final AttendingLectureRepo attendingLectureRepo;
     private final InstructorRepository instructorRepository;
 
-    @GetMapping("test-agg")
+
+    @GetMapping(value = "test-agg")
     public String testAggregate() {
         List<Object[]> results =
                 instructorRepository.selectILCountObject();
