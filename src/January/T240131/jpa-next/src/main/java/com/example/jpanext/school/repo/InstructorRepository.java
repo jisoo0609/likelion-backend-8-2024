@@ -11,13 +11,17 @@ import java.util.List;
 
 public interface InstructorRepository
         extends JpaRepository<Instructor, Long> {
-    // 지도학생을 데리고 있지 않은 강사를 삭제한다
-
-    // 강의를 하고있지 않은 강사를 삭제한다
+    // 지도학생을 데리고 있지 않은 강사를 삭제
     @Modifying
-    @Query("DELETE FROM Instructor i "+
-            // size()는 JPQL이 제공하는 기능이다
-            "WHERE i.id NOT IN "+
+    @Query("DELETE FROM Instructor i " +
+            // size()는 JPQL이 제공하는 기능
+            "WHERE size(i.advisingStudents) = 0")
+    Integer sackInstructorsNotAdvising();
+
+    // 강의를 하고있지 않은 강사를 삭제
+    @Modifying
+    @Query("DELETE FROM Instructor i " +
+            "WHERE i.id NOT IN " +
             "(SELECT DISTINCT l.instructor.id FROM Lecture l)")
     Integer sackInstructorsNotTeaching();
 
