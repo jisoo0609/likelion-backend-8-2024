@@ -65,7 +65,29 @@ public class ShopService {
     @Transactional
     public void testDirtyChecking() {
         itemRepository.findAll().stream()
-                .forEach(item ->  item.setStock(100));
+                .forEach(item -> item.setStock(100));
+    }
+
+    @Transactional
+    public void decreaseStockOpt() {
+        Item item = itemRepository.findById(1L)
+                .orElseThrow();
+        item.setStock(item.getStock() - 10);
+        itemRepository.save(item);
+    }
+
+    @Transactional
+    public void decreaseStockShare() {
+        Item item = itemRepository.findItemForShare(1L).orElseThrow();
+        item.setStock(item.getStock() - 10);
+        itemRepository.save(item);
+    }
+
+    @Transactional
+    public void decreaseStockUpdate() {
+        Item item = itemRepository.findItemForUpdate(1L).orElseThrow();
+        item.setStock(item.getStock() - 10);
+        itemRepository.save(item);
     }
 
 }
