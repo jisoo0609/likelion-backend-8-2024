@@ -19,6 +19,6 @@ public class Instructor {
     private String name;
 
     // cascade: 영속성 전이
-    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advisor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Student> advisingStudents = new ArrayList<>();
 }

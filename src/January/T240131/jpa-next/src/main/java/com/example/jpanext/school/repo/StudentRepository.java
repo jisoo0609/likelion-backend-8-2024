@@ -34,4 +34,19 @@ public interface StudentRepository
             Instructor instructor
     );
 
+    @Query("SELECT s FROM Student s JOIN s.advisor")
+    List<Student> findAllJoin();
+
+    @Query("SELECT s FROM Student s LEFT JOIN s.advisor")
+    List<Student> findAllLeftJoin();
+
+    @Query("SELECT s FROM Student s RIGHT JOIN s.advisor")
+    List<Student> findAllRightJoin();
+
+    @Query("SELECT s FROM Student s JOIN s.advisor WHERE s.advisor.name = :name")
+    List<Student> findByAdvisorName(@Param("name") String name);
+
+    @Query("SELECT s FROM Student s JOIN FETCH s.advisor")
+    List<Student> findAllFetchAdvisor();
+
 }

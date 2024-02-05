@@ -12,6 +12,7 @@ import com.example.jpanext.school.repo.LectureRepository;
 import com.example.jpanext.school.repo.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.collection.spi.PersistentBag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -38,6 +39,65 @@ public class SchoolController {
     private final AttendingLectureRepo attendingLectureRepo;
     private final InstructorRepository instructorRepository;
 
+    @GetMapping("entity-graph")
+    public String entityGraph() {
+        List<Instructor> instructors = instructorRepository.findByEntityGraph();
+        for (Instructor instructor: instructors) {
+            log.info("{}", instructor.getAdvisingStudents().size());
+        }
+        return "done";
+    }
+
+    @GetMapping("fetch-join")
+    public String fetchJoin() {
+//        List<Student> students = studentRepository.findAllFetchAdvisor();
+//        for (Student student: students) {
+//            student.getAdvisor().getName();
+//        }
+        List<Instructor> instructors = instructorRepository.findAllFetchStudents();
+        for (Instructor instructor: instructors) {
+            log.info("{}", instructor.getAdvisingStudents().size());
+        }
+
+        return "done";
+    }
+
+    @GetMapping("join")
+    public String join() {
+        log.info("{}", studentRepository.findAllJoin().size());
+        log.info("{}", studentRepository.findAllLeftJoin().size());
+        log.info("{}", studentRepository.findAllRightJoin().size());
+        log.info("{}", studentRepository.findByAdvisorName("Plato Best"));
+
+//        for (Student student: studentRepository.findAllJoin()) {
+//            student.getAdvisor().getName();
+//        }
+
+
+        return "done";
+    }
+
+    @GetMapping("fetch-type")
+    public String fetchType() {
+//        List<Instructor> instructors = instructorRepository.findAll();
+//        for (Instructor instructor: instructors) {
+//            // PersistentBag
+//            log.info("{}", instructor.getAdvisingStudents().getClass());
+//        }
+//        List<Student> students = studentRepository.findAll();
+//        for (Student student: students) {
+//            if (student.getAdvisor() != null) {
+//                log.info("{}", student.getAdvisor().getClass());
+//                log.info("{}", student.getAdvisor().getId());
+//            }
+//        }
+
+        // SELECT t FROM T t;
+        instructorRepository.findAll();
+        studentRepository.findAll();
+
+        return "done";
+    }
 
     @GetMapping(value = "test-agg")
     public String testAggregate() {
