@@ -50,4 +50,22 @@ public class ShopService {
             itemRepository.save(item);
         } else throw new IllegalStateException();
     }
+
+    @Transactional
+    public void testIdentity() {
+        Item item = Item.builder().build();
+        Long id = itemRepository.save(item).getId();
+
+        Item a = itemRepository.findById(id).get();
+        Item b = itemRepository.findById(id).get();
+
+        log.info("is same object: {}", a == b);
+    }
+
+    @Transactional
+    public void testDirtyChecking() {
+        itemRepository.findAll().stream()
+                .forEach(item ->  item.setStock(100));
+    }
+
 }

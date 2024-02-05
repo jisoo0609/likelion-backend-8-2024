@@ -14,7 +14,7 @@ public class ParentService {
     private final CustomerRepository customerRepository;
     private final ChildService childService;
 
-    @Transactional
+//    @Transactional
     public void none() {
         customerRepository.save(Customer.builder()
                 .name("Parent None1").build());

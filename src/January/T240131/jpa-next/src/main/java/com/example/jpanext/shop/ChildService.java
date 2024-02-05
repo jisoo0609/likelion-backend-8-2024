@@ -29,4 +29,13 @@ public class ChildService {
                 .name("Child Mandatory").build());
         throw new RuntimeException("child throw");
     }
+
+    // 나를 호출한 메서드가 트랜잭션이 아니어야 한다
+    // 있으면 예외가 발생한다.
+    @Transactional(propagation = Propagation.NEVER)
+    public void never() {
+        customerRepository.save(Customer.builder()
+                .name("Child Never").build());
+        throw new RuntimeException("child throw");
+    }
 }
