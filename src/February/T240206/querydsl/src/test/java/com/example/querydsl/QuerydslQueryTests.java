@@ -69,11 +69,11 @@ public class QuerydslQueryTests {
                         .build(),
                 Item.builder()
                         .name("itemE")
-                        .price(11000)
+                        .price(5500)
                         .stock(10)
                         .build(),
                 Item.builder()
-                        .price(10500)
+                        .price(7500)
                         .stock(25)
                         .build()
         ));
@@ -146,4 +146,36 @@ public class QuerydslQueryTests {
         foundList = results.getResults();
     }
 
+    @Test
+    public void sort() {
+        itemRepository.saveAll(List.of(
+                Item.builder()
+                        .name("itemF")
+                        .price(6000)
+                        .stock(40)
+                        .build(),
+                Item.builder()
+                        .price(6000)
+                        .stock(40)
+                        .build())
+        );
+        List<Item> foundList = queryFactory
+                // SELECT i FROM Item i
+                .selectFrom(item)
+                // item.(속성).(순서)를 ORDER BY 넣을 순서대로
+                // ORDER BY i.price ASC
+                .orderBy(
+                        // item.price asc
+                        item.price.asc(),
+                        item.stock.desc(),
+                        // null이 먼저냐 나중이냐
+                        item.name.asc().nullsLast()
+//                        item.name.asc().nullsFirst()
+                )
+                .fetch();
+
+        for (Item found: foundList) {
+            System.out.printf("%s: %d (%d)%n", found.getName(), found.getPrice(), found.getStock());
+        }
+    }
 }
