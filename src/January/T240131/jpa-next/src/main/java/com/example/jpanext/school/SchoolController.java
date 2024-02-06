@@ -41,7 +41,9 @@ public class SchoolController {
 
     @GetMapping("pageable")
     public String pageable() {
-        Page<Instructor> instructorPage = instructorRepository.findFetchPage();
+        instructorRepository.findAll(PageRequest.of(0, 10))
+                .forEach(i -> System.out.println(i.getAdvisingStudents().size()));
+        return "done";
     }
 
     @GetMapping("multi-bag")
