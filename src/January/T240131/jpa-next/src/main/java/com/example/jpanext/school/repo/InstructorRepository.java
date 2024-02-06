@@ -3,6 +3,8 @@ package com.example.jpanext.school.repo;
 import com.example.jpanext.school.dto.ILCountDto;
 import com.example.jpanext.school.dto.ILCountProjection;
 import com.example.jpanext.school.entity.Instructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,6 +14,16 @@ import java.util.List;
 
 public interface InstructorRepository
         extends JpaRepository<Instructor, Long> {
+    @Query("SELECT DISTINCT i "+
+            "FROM Instructor i "+
+            "   LEFT JOIN FETCH i.advisingStudents")
+    Page<Instructor> findFetchPage(Pageable pageable);
+
+    @Query("SELECT DISTINCT i "+
+            "FROM Instructor i "+
+            "   LEFT JOIN FETCH i.advisingStudents "+
+            "   LEFT JOIN FETCH i.lectures")
+    List<Instructor> findFetchStudentAndLecture();
 
     @EntityGraph(
             attributePaths = {"advisingStudents", "lectures"},

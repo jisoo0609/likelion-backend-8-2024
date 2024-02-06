@@ -39,6 +39,11 @@ public class SchoolController {
     private final AttendingLectureRepo attendingLectureRepo;
     private final InstructorRepository instructorRepository;
 
+    @GetMapping("pageable")
+    public String pageable() {
+        Page<Instructor> instructorPage = instructorRepository.findFetchPage();
+    }
+
     @GetMapping("multi-bag")
     public String multiBag() {
         List<Instructor> instructors
