@@ -21,4 +21,7 @@ public class Instructor {
     // cascade: 영속성 전이
     @OneToMany(mappedBy = "advisor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Student> advisingStudents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY)
+    private final List<Lecture> lectures = new ArrayList<>();
 }
