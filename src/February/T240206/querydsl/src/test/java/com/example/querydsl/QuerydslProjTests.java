@@ -1,6 +1,8 @@
 package com.example.querydsl;
 
 import com.example.querydsl.dto.ItemDto;
+import com.example.querydsl.dto.ItemDtoProj;
+import com.example.querydsl.dto.QItemDtoProj;
 import com.example.querydsl.entity.Item;
 import com.example.querydsl.entity.Shop;
 import com.example.querydsl.repo.ItemRepository;
@@ -18,9 +20,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.querydsl.entity.QItem.item;
+import static com.example.querydsl.entity.QShop.shop;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -184,8 +188,8 @@ public class QuerydslProjTests {
                         ItemDto.class,
                         // 인자를 넣을 수 있는 형태의 생성자를
                         // 찾아서 실행함으로서 객체를 만든다.
-                        item.price,
                         item.name,
+                        item.price,
                         item.stock
                 ))
                 .from(item)
@@ -194,6 +198,23 @@ public class QuerydslProjTests {
                         item.stock.isNotNull()
                 )
                 .fetch();
+        itemDtoList.forEach(System.out::println);
+    }
+
+    @Test
+    public void queryProjection() {
+        List<ItemDtoProj> itemDtoList = queryFactory
+                // 만들어진 QDto의 생성자를 호출함으로서
+                // 결과를 Dto로 받을 수 있다.
+                .select(new QItemDtoProj(
+                        item.name,
+                        item.price,
+                        item.stock
+                ))
+                .from(item)
+                .where(item.name.isNotNull())
+                .fetch();
+
         itemDtoList.forEach(System.out::println);
     }
 }

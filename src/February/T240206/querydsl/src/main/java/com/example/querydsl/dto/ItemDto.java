@@ -14,8 +14,8 @@ public class ItemDto {
     private Integer totalCost;
 
     public ItemDto(
-            Integer cost,
             String name,
+            Integer cost,
             Integer stock
     ) {
         this.name = name;
