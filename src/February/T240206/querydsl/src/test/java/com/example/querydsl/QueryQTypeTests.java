@@ -104,7 +104,7 @@ public class QueryQTypeTests {
                 .fetchOne();
         assertEquals("itemC", found.getName());
 
-        // 함부로 섞어쓰면 예외 발새어ㅗ
+        // 함부로 섞어쓰면 예외 발생
         assertThrows(Exception.class, () -> {
             jpaQueryFactory
                     // SELECT item FROM Item item
