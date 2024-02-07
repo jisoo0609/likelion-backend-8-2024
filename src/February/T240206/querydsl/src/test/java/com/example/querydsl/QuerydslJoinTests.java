@@ -4,7 +4,7 @@ import com.example.querydsl.entity.Item;
 import com.example.querydsl.entity.Shop;
 import com.example.querydsl.repo.ItemRepository;
 import com.example.querydsl.repo.ShopRepository;
-import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -16,10 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.querydsl.entity.QItem.item;
+import static com.example.querydsl.entity.QShop.shop;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -136,5 +136,51 @@ public class QuerydslJoinTests {
                 .fetchOne();
         // 검색한 데이터의 Shop 데이터는 가져와진 상태
         assertTrue(unitUtil.isLoaded(found.getShop()));
+    }
+
+    /**
+     * SELECT COUNT(item), MAX(item.price) FROM Item item;
+     */
+    @Test
+    public void aggregate() {
+        // Querydsl의 Tuple
+        Tuple result = queryFactory
+                // 집계하고 싶은 속성의 집계함수 메서드를 호출하여 select에 추가
+                // item.(속성).(집계함수)()
+                .select(
+                        item.count(),
+                        item.price.avg(),
+                        item.price.max(),
+                        item.stock.sum()
+                )
+                .from(item)
+                .fetchOne();
+        // Tuple은 조회했던 QType의 속성 및 집계를 기준으로 데이터 회수 가능
+        assertEquals(6, result.get(item.count()));
+        assertEquals(175, result.get(item.stock.sum()));
+        // 없는건 null로 반환
+        assertNull(result.get(item.stock));
+
+        List<Tuple> results = queryFactory
+                .select(
+                        shop.name,
+                        item.count(),
+                        item.price.avg(),
+                        item.stock.sum()
+                )
+                .from(item)
+                .join(item.shop)
+                .groupBy(shop.name)
+                .fetch();
+
+        for (Tuple tuple: results) {
+            System.out.printf(
+                    "%s: %d, %.2f (%d)%n",
+                    tuple.get(shop.name),
+                    tuple.get(item.count()),
+                    tuple.get(item.price.avg()),
+                    tuple.get(item.stock.sum())
+            );
+        }
     }
 }
