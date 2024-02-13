@@ -1,5 +1,6 @@
 package com.example.redis.config;
 
+import com.example.redis.dto.ItemDto;
 import com.example.redis.dto.PersonDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 10)
+@EnableRedisHttpSession
 public class RedisConfig {
     @Bean
     public RedisTemplate<String, PersonDto> personRedisTemplate(
@@ -25,6 +26,16 @@ public class RedisConfig {
         template.setKeySerializer(RedisSerializer.string());
         // 미리 만들어진 JSON 변환기를 설정
         template.setValueSerializer(RedisSerializer.json());
+        return template;
+    }
+
+    @Bean
+    public RedisTemplate<Long, ItemDto> cacheRedisTemplate(
+            RedisConnectionFactory connectionFactory
+    ) {
+        RedisTemplate<Long, ItemDto> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        template.setDefaultSerializer(RedisSerializer.json());
         return template;
     }
 }
