@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 10)
 public class RedisConfig {
     @Bean
     public RedisTemplate<String, PersonDto> personRedisTemplate(
