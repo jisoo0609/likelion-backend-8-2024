@@ -1,0 +1,7 @@
+spring:
+  data:
+    redis:
+      host: redis-19553.c54.ap-northeast-1-2.ec2.cloud.redislabs.com
+      port: 19553
+      username: default
+      password: SNka8EkMbBLri9xXLHTfxotVNVLyILZz
