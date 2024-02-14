@@ -3,13 +3,15 @@ package com.example.redis.dto;
 import com.example.redis.entity.Item;
 import lombok.*;
 
+import java.io.Serializable;
+
 
 @Getter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDto {
+public class ItemDto implements Serializable {
     private Long id;
     private String name;
     private String description;

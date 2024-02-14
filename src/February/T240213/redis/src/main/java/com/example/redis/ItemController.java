@@ -2,10 +2,7 @@ package com.example.redis;
 
 import com.example.redis.dto.ItemDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,6 +11,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+
+    @PostMapping
+    public ItemDto create(
+            @RequestBody
+            ItemDto itemDto
+    ) {
+        return itemService.create(itemDto);
+    }
 
     @GetMapping
     public List<ItemDto> readAll() {

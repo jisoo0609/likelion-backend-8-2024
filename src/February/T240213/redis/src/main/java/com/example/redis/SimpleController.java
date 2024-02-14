@@ -14,6 +14,7 @@ import java.util.Set;
 public class SimpleController {
     // 문자열 Key와 문자열로 구성된 Value를 다루기 위한 RedisTemplate
     private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, PersonDto> personRedisTemplate;
 
     @PutMapping("string")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -58,8 +59,6 @@ public class SimpleController {
                 = redisTemplate.opsForSet();
         return operations.members(key);*/
     }
-
-    private final RedisTemplate<String, PersonDto> personRedisTemplate;
 
     @PutMapping("person")
     @ResponseStatus(HttpStatus.NO_CONTENT)
