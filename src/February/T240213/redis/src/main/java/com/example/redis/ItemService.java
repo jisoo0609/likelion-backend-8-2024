@@ -12,11 +12,10 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -102,5 +101,16 @@ public class ItemService {
 
     public void purchase(Long id) {
         ItemDto item = ItemDto.fromEntity(repository.purchase(id));
+        rankOps.incrementScore("soldRanks", item, 1);
+    }
+
+    public List<ItemDto> getMostSold() {
+        Set<ItemDto> ranks = rankOps.reverseRange("soldRanks", 0, 9);
+        // LinkedHashSet: 순서가 존재하는 집합
+        if (ranks == null) return Collections.emptyList();
+
+        log.info(String.valueOf(ranks.getClass()));
+        return ranks.stream().toList();
+//        return new ArrayList<>(ranks);
     }
 }
