@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
     @Resource(name = "cacheRedisTemplate")
     private ValueOperations<Long, ItemDto> cacheOps;
+    @Resource(name = "rankTemplate")
+    private ZSetOperations<String, ItemDto> rankOps;
 
     public ItemDto createManual(ItemDto dto) {
         Item item = itemRepository.save(Item.builder()
@@ -95,5 +98,9 @@ public class ItemService {
 //                .map(ItemDto::fromEntity)
 //                .orElseThrow(() ->
 //                        new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public void purchase(Long id) {
+        ItemDto item = ItemDto.fromEntity(repository.purchase(id));
     }
 }
