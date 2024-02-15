@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    username: jdewznfv
+    password: jC1JPyo3YCRNUFajz_vKctDtSHJAH04H
+    host: dingo.rmq.cloudamqp.com
+    port: 5672
+    virtual-host: jdewznfv

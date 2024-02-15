@@ -1,10 +1,10 @@
 spring:
   rabbitmq:
-    username: <username>
-    password: <password>
-    host: <host>
-    port: <port>
-    virtual-host: <vhost>
+    username: jdewznfv
+    password: jC1JPyo3YCRNUFajz_vKctDtSHJAH04H
+    host: dingo.rmq.cloudamqp.com
+    port: 5672
+    virtual-host: jdewznfv
 
   datasource:
     url: jdbc:sqlite:../producer/db.sqlite
