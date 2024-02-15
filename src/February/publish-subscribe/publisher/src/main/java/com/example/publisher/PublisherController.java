@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class publisherController {
+public class PublisherController {
     private final PublisherService service;
 
     @PostMapping("fanout")
@@ -16,5 +16,25 @@ public class publisherController {
             String message
     ) {
         service.fanoutMessage(message);
+    }
+
+    @PostMapping("direct")
+    public void direct(
+            @RequestParam("message")
+            String message,
+            @RequestParam("key")
+            String key
+    ) {
+        service.directMessage(message, key);
+    }
+
+    @PostMapping("topic")
+    public void topic(
+            @RequestParam("message")
+            String message,
+            @RequestParam("topic")
+            String topic
+    ) {
+        service.topicMessage(message, topic);
     }
 }

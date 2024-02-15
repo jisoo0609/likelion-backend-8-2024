@@ -20,7 +20,6 @@ public class SubscriberConfig {
         return new AnonymousQueue();
     }
 
-
     @Bean
     public Binding fanoutBinding() {
         // 우체통을 우체국에 전달
@@ -29,16 +28,54 @@ public class SubscriberConfig {
                 .bind(fanoutQueue())
                 .to(fanoutExchange());
     }
-//    @Bean
-//    public Binding fanoutBinding(
-//            // 어떤 Queue로 등록된 Bean을 사용할지
-//            @Qualifier("fanoutQueue")
-//            Queue queue,
-//            FanoutExchange fanoutExchange
-//    ) {
-//        // 우체통을 우체국에 전달
-//        return BindingBuilder
-//                .bind(queue)
-//                .to(fanoutExchange);
-//    }
+
+/*  @Bean
+    public Binding fanoutBinding(
+            // 어떤 Queue로 등록된 Bean을 사용할지
+            @Qualifier("fanoutQueue")
+            Queue queue,
+            FanoutExchange fanoutExchange
+    ) {
+        // 우체통을 우체국에 전달
+        return BindingBuilder
+                .bind(queue)
+                .to(fanoutExchange);
+    }
+*/
+
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange("boot.direct");
+    }
+
+    @Bean
+    public Queue directQueue() {
+        return new AnonymousQueue();
+    }
+
+    @Bean
+    public Binding directBinding() {
+        return BindingBuilder
+                .bind(directQueue())
+                .to(directExchange())
+                .with("warning");
+    }
+
+    @Bean
+    public TopicExchange topicExchange() {
+        return new TopicExchange("boot.topic");
+    }
+
+    @Bean
+    public Queue topicQueue() {
+        return new AnonymousQueue();
+    }
+
+    @Bean
+    public Binding topicBinding() {
+        return BindingBuilder
+                .bind(topicQueue())
+                .to(topicExchange())
+                .with("auth.alert.*");
+    }
 }
