@@ -1,5 +1,6 @@
 package com.example.kafkaproducer;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.RoundRobinPartitioner;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -18,7 +19,6 @@ public class KafkaProducerConfig {
     // Producer 설정
     public ProducerFactory<String, String> stringProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-
         // 연결할 Kafka Broker들
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         // 데이터 직렬화
@@ -35,5 +35,24 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTemplate<String, String> stringKafkaTemplate() {
         return new KafkaTemplate<>(stringProducerFactory());
+    }
+
+
+    // Payload 보내기
+    @Bean
+    public ProducerFactory<String, PayloadDto> payloadProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        // 연결할 Kafka Broker들
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        // 데이터 직렬화
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean
+    public KafkaTemplate<String, PayloadDto> payloadKafkaTemplate() {
+        return new KafkaTemplate<>(payloadProducerFactory());
     }
 }
