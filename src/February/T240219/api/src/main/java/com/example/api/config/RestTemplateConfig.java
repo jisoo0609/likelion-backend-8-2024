@@ -13,10 +13,11 @@ public class RestTemplateConfig {
     public RestTemplate defaultRestTemplate(
             RestTemplateBuilder templateBuilder
     ) {
-        // 그냥 새로 생성해서 사용할 수도 있음
+        // 그냥 새로 생성해서 사용할수도 있음
         // RestTemplate restTemplate = new RestTemplate();
         return templateBuilder
                 .rootUri("http://localhost:8081")
+                // .errorHandler()
                 .build();
     }
 }

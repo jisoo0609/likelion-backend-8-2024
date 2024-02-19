@@ -19,9 +19,10 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ArticleTemplateClient {
+public class ArticleTemplateClient implements ArticleClient {
     private final RestTemplate restTemplate;
 
+    @Override
     // POST
     public ArticleDto create(ArticleDto dto) {
         // postForObject: 객체를 받기위해 POST 요청을 한다.
@@ -52,6 +53,7 @@ public class ArticleTemplateClient {
         return response;
     }
 
+    @Override
     // GET
     public ArticleDto readOne(Long id) {
         // getForObject: 객체를 받기위해 GET 요청을 한다.
@@ -82,6 +84,7 @@ public class ArticleTemplateClient {
         return response;
     }
 
+    @Override
     public List<ArticleDto> readAll() {
         // getForObject
         ArticleDto[] response = restTemplate.getForObject(
@@ -151,6 +154,7 @@ public class ArticleTemplateClient {
                 .toList();
     }
 
+    @Override
     // PUT
     public ArticleDto update(Long id, ArticleDto dto) {
         // put: PUT 요청을 보낸다.
@@ -168,6 +172,7 @@ public class ArticleTemplateClient {
         return responseEntity.getBody();
     }
 
+    @Override
     public void delete(Long id) {
 //        restTemplate.delete(String.format("/articles/%d", id));
         // exchange
@@ -184,12 +189,3 @@ public class ArticleTemplateClient {
 
 // /search?q=&&page=10
 // /search?q=%26&page=10
-
-
-
-
-
-
-
-
-

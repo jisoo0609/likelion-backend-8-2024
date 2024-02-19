@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Configuration
 public class RestClientConfig {
     @Bean
-    // RestClient.Builder를 활용해 전체 서비스에서 사용함
+    // RestClient.Builder를 활용해 전체 서비스에서 사용할
     // 기본 설정을 갖춘 RestClient Bean으로 등록 가능
     public RestClient defaultRestClient() {
         // RestClient restClient = RestClient.create();

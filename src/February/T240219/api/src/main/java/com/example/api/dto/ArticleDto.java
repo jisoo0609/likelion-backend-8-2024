@@ -6,7 +6,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-// Request Body 또는 Response Body를 나타낸다
+// Request Body 또는 Response Body를 나타낸다.
 // 이걸 HTTP Client들이 그대로 활용 가능
 public class ArticleDto {
     private Long id;

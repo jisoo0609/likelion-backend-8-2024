@@ -1,9 +1,8 @@
 package com.example.api;
 
-import com.example.api.client.ArticleTemplateClient;
-import com.example.api.client.ArticleWebClient;
+import com.example.api.client.ArticleClient;
+import com.example.api.client.ArticleService;
 import com.example.api.dto.ArticleDto;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +12,22 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/articles")
-@RequiredArgsConstructor
 public class ArticleController {
-    private final ArticleTemplateClient templateClient;
-    private final ArticleWebClient articleWebClient;
+    private final ArticleClient service;
+
+    public ArticleController(
+            ArticleService articleService
+    ) {
+        this.service = articleService;
+    }
+
 
     @PostMapping
     public ArticleDto create(
             @RequestBody
             ArticleDto dto
     ) {
-        return templateClient.create(dto);
+        return service.create(dto);
     }
 
     @GetMapping("/{id}")
@@ -31,13 +35,12 @@ public class ArticleController {
             @PathVariable("id")
             Long id
     ) {
-//        return templateClient.readOne(id);
-        return articleWebClient.readOne(id);
+        return service.readOne(id);
     }
 
     @GetMapping
     public List<ArticleDto> readAll() {
-        return templateClient.readAll();
+        return service.readAll();
     }
 
     @PutMapping("{id}")
@@ -47,7 +50,7 @@ public class ArticleController {
             @RequestBody
             ArticleDto dto
     ) {
-        return templateClient.update(id, dto);
+        return service.update(id, dto);
     }
 
     @DeleteMapping("{id}")
@@ -56,6 +59,6 @@ public class ArticleController {
             @PathVariable("id")
             Long id
     ) {
-        templateClient.delete(id);
+        service.delete(id);
     }
 }

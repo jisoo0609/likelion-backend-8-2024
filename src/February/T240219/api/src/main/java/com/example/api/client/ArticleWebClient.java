@@ -15,9 +15,10 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ArticleWebClient {
+public class ArticleWebClient implements ArticleClient {
     private final WebClient webClient;
 
+    @Override
     public ArticleDto create(ArticleDto dto) {
         // WebClient는 HTTP 요청을 Build 한다고 생각해보자.
         ArticleDto response = webClient
@@ -44,7 +45,7 @@ public class ArticleWebClient {
                 .bodyValue(dto)
                 // 여기부터 응답을 어떻게 처리할지
                 .retrieve()
-                // Mono 응답을 받는다.
+                // ResponseEntity가 담긴 Mono를 받는다.
                 .toEntity(ArticleDto.class)
                 // 동기식으로 처리한다.
                 .block();
@@ -53,6 +54,7 @@ public class ArticleWebClient {
         return response;
     }
 
+    @Override
     public ArticleDto readOne(Long id) {
         ArticleDto response = webClient
                 .get()
@@ -74,6 +76,7 @@ public class ArticleWebClient {
         return response;
     }
 
+    @Override
     public List<ArticleDto> readAll() {
         // ParameterizedTypeReference
         List<ArticleDto> response = webClient.get()
@@ -85,5 +88,38 @@ public class ArticleWebClient {
         log.info("response type: {}", response.getClass());
 
         return response;
+    }
+
+    @Override
+    public ArticleDto update(Long id, ArticleDto dto) {
+        Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("id", id);
+        ArticleDto response = webClient.put()
+                .uri("/articles/{id}", uriVariables)
+                .bodyValue(dto)
+                .retrieve()
+                .bodyToMono(ArticleDto.class)
+                .block();
+        log.info("response: {}", response);
+        ResponseEntity<ArticleDto> responseEntity = webClient.put()
+                .uri("/articles/{id}", uriVariables)
+                .bodyValue(dto)
+                .retrieve()
+                .toEntity(ArticleDto.class)
+                .block();
+        log.info("status code: {}", responseEntity.getStatusCode());
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public void delete(Long id) {
+        Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("id", id);
+        ResponseEntity<?> responseEntity = webClient.delete()
+                .uri("/articles/{id}", uriVariables)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+        log.info("status code: {}", responseEntity.getStatusCode());
     }
 }

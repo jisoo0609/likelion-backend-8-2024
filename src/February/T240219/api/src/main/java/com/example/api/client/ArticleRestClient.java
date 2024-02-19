@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ArticleRestClient {
+public class ArticleRestClient implements ArticleClient {
     private final RestClient restClient;
 
     public ArticleDto create(ArticleDto dto) {
@@ -42,6 +44,23 @@ public class ArticleRestClient {
         return response;
     }
 
+    @Override
+    public ArticleDto readOne(Long id) {
+        ResponseEntity<ArticleDto> responseEntity = restClient.get()
+                .uri("/articles/{id}", id)
+                .retrieve()
+                .toEntity(ArticleDto.class);
+        log.info("responseEntity, Object...: {}", responseEntity);
+
+        Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("id", id);
+        responseEntity = restClient.get()
+                .uri("/articles/{id}", uriVariables)
+                .retrieve().toEntity(ArticleDto.class);
+        log.info("responseEntity, Map: {}", responseEntity);
+        return responseEntity.getBody();
+    }
+
     public List<ArticleDto> readAll() {
         return restClient.get()
                 .uri("/articles")
@@ -49,10 +68,23 @@ public class ArticleRestClient {
                 .body(new ParameterizedTypeReference<>() {});
     }
 
+    @Override
+    public ArticleDto update(Long id, ArticleDto dto) {
+        Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("id", id);
+        ResponseEntity<ArticleDto> responseEntity = restClient.put()
+                .uri("/articles/{id}", uriVariables)
+                .body(dto)
+                .retrieve()
+                .toEntity(ArticleDto.class);
+        log.info("status code: {}", responseEntity.getStatusCode());
+        return responseEntity.getBody();    }
+
     public void delete(Long id) {
         ResponseEntity<Void> responseEntity = restClient.delete()
                 .uri("/articles/{id}", id)
                 .retrieve()
                 .toBodilessEntity();
+        log.info("responseEntity: {}", responseEntity);
     }
 }
