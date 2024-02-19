@@ -16,9 +16,9 @@ public class WebClientConfig {
         // WebClient webClient = WebClient.create();
         return WebClient.builder()
                 .baseUrl("http://localhost:8081")
-                .defaultHeader("test", "foo")
+                .defaultHeader("test0", "foo")
                 .defaultRequest(request ->
-                        request.header("test", "bar"))
+                        request.header("test1", "bar"))
                 .defaultStatusHandler(
                         HttpStatusCode::isError, response
                                 -> {throw new ResponseStatusException(response.statusCode());}
