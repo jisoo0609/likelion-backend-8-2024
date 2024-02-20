@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 // CleintId와 Secret을 보냄
 @Component
 public class SpotifyTokenService {
-    @Value("${spotify.client-id}")
+    @Value("b1f1ec003a844785a9ea9a8cfcf414c6")
     private String clientId;
     @Value("${spotify.client-secret}")
     private String clientSecret;
