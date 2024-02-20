@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class AccessTokenDTo {
+public class AccessTokenDto {
     private String accessToken;
     private String tokenType;
     private Integer expiresIn;
