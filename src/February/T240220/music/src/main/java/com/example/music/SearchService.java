@@ -31,13 +31,12 @@ public class SearchService {
                 .toUriString();
 
         // Bearer Token 준비
-        String tokenHeaderValue
-//                = "Bearer " + tokenService.getAccessToken().getAccessToken();
-                 = "Bearer " + tokenService.getToken();
+//        String tokenHeaderValue
+//                 = "Bearer " + tokenService.getToken();
 
         return spotifyClient.get()
                 .uri(url)
-                .header("Authorization", tokenHeaderValue)
+//                .header("Authorization", tokenHeaderValue)
                 .retrieve()
                 .body(Object.class);
     }

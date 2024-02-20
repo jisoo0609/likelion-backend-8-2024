@@ -16,11 +16,6 @@ import java.time.temporal.ChronoUnit;
 @Slf4j
 @Component
 public class SpotifyTokenService {
-//    @Value("${spotify.client-id}")
-//    private String clientId;
-//    @Value("${spotify.client-secret}")
-//    private String clientSecret;
-
     // Request Body가 변하지 않으므로 필드로 올리자.
     private final MultiValueMap<String, Object> parts;
 
@@ -33,13 +28,14 @@ public class SpotifyTokenService {
     private final RestClient authRestClient;
 
     public SpotifyTokenService(
-            RestClient authRestClient,
             @Value("${spotify.client-id}")
             String clientId,
             @Value("${spotify.client-secret}")
             String clientSecret
     ) {
-        this.authRestClient = authRestClient;
+        this.authRestClient = RestClient.builder()
+                .baseUrl("https://accounts.spotify.com/api/token")
+                .build();
         // 항상 같은 Request Body를 보내게 됨으로,
         // 해당 Request Body는 저장을 해두자.
         this.parts = new LinkedMultiValueMap<>();
@@ -83,11 +79,6 @@ public class SpotifyTokenService {
     // 메서드가 실행될 때 마다 AccessToken이 재발행 된다.
     @Deprecated
     public AccessTokenDto getAccessToken() {
-//        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
-//        parts.add("grant_type", "client_credentials");
-//        parts.add("client_id", clientId);
-//        parts.add("client_secret", clientSecret);
-
         return authRestClient.post()
                 // Content-Type 헤더 설정
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
