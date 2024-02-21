@@ -60,5 +60,17 @@ public class OrderService {
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
     // readTossPayment
+    public Object readTossPayment(Long id) {
+        // 1. id를 가지고 주문정보를 조회한다.
+        ItemOrder order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        // 2. 주문정보에 포함된 결제정보(paymentId)를 바탕으로
+        // Toss에 요청을 보낸다.
+        Object response = tossService.getPayment(order.getTossPaymentKey());
+        log.info(response.toString());
+        // 3. 해당 결제 정보를 반환한다.
+        return response;
+    }
 }

@@ -15,6 +15,7 @@ public class RestClientConfig {
     @Value("${toss.secret}")
     private String tossSecret;
 
+    // Authorization Header를 포함해서 요청을 보냄
     @Bean
     public RestClient tossClient() {
         String basicAuth = Base64.getEncoder().encodeToString((tossSecret + ":").getBytes());
