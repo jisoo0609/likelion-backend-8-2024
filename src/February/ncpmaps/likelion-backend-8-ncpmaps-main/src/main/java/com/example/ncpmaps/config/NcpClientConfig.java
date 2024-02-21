@@ -24,10 +24,9 @@ import java.security.NoSuchAlgorithmException;
 @Slf4j
 @Configuration
 public class NcpClientConfig {
-    private static final String NCP_APIGW_API_KEY_ID = "X-NCP-APIGW-API-KEY-ID";
-    private static final String NCP_APIGW_API_KEY = "X-NCP-APIGW-API-KEY";
-
-    // application.yaml에서 설정해야 함
+    // NCP Map API Rest Client
+    private static final String NCP_APIGW_KEY_ID = "X-NCP-APIGW-API-KEY-ID";
+    private static final String NCP_APIGW_KEY = "X-NCP-APIGW-API-KEY";
     @Value("${ncp.api.client-id}")
     private String ncpMapClientId;
     @Value("${ncp.api.client-secret}")
@@ -37,18 +36,18 @@ public class NcpClientConfig {
     public RestClient ncpMapClient() {
         return RestClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com")
-                .defaultHeader(NCP_APIGW_API_KEY_ID, ncpMapClientId)
-                .defaultHeader(NCP_APIGW_API_KEY, ncpMapClientSecret)
+                .defaultHeader(NCP_APIGW_KEY_ID, ncpMapClientId)
+                .defaultHeader(NCP_APIGW_KEY, ncpMapClientSecret)
                 .build();
     }
 
-    // HTTP Interface의 구현체가 Bean 객체로 등록된다.
     @Bean
     public NcpMapApiService mapApiService() {
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(ncpMapClient()))
                 .build()
                 .createClient(NcpMapApiService.class);
     }
+
 
     // Geolocation API Rest Client
     private static final String X_TIMESTAMP_HEADER = "x-ncp-apigw-timestamp";
@@ -62,6 +61,7 @@ public class NcpClientConfig {
     @Bean
     public RestClient ncpGeolocationClient() {
         return RestClient.builder()
+                .baseUrl("https://geolocation.apigw.ntruss.com/geolocation/v2/geoLocation")
                 .requestInitializer(request -> {
                     HttpHeaders requestHeaders = request.getHeaders();
 
