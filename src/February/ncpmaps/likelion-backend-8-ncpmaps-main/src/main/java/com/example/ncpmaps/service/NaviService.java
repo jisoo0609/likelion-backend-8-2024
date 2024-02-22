@@ -76,5 +76,29 @@ public class NaviService {
         ));
     }
 
+    public NaviRouteDto withIpAddress(NaviWithIpsDto dto) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("ip", dto.getStartIp());
+        params.put("responseFormatType", "json");
+        params.put("ext", "t");
+        GeoLocationNcpResponse startInfo
+                = geolocationService.geoLocation(params);
+        log.info(startInfo.toString());
 
+        params.put("ip", dto.getGoalIp());
+        GeoLocationNcpResponse goalInfo
+                = geolocationService.geoLocation(params);
+        log.info(goalInfo.toString());
+
+        PointDto start = new PointDto(
+                startInfo.getGeoLocation().getLat(),
+                startInfo.getGeoLocation().getLng()
+        );
+        PointDto goal = new PointDto(
+                goalInfo.getGeoLocation().getLat(),
+                goalInfo.getGeoLocation().getLng()
+        );
+
+        return twoPointRoute(new NaviWithPointsDto(start, goal));
+    }
 }
