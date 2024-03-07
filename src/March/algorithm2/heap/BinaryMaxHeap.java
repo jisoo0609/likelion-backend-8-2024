@@ -31,7 +31,6 @@ public class BinaryMaxHeap {
         if (size == heap.length) {
             throw new RuntimeException("Heap is full");
         }
-
         // 제일 끝에 데이터를 넣어준다.
         heap[size] = item;
         // 해당 데이터를 부모와 비교해가며 힙의 조건을 만족시키게 만든다.
@@ -107,13 +106,18 @@ public class BinaryMaxHeap {
 
     public static void main(String[] args) {
         BinaryMaxHeap maxHeap = new BinaryMaxHeap();
-        for (int i = 1; i <17; i++) {
+        for (int i = 1; i < 17; i++) {
             maxHeap.insert(i);
         }
-        System.out.println();
         for (int i = 0; i < 16; i++) {
             System.out.print(maxHeap.remove() + ", ");
         }
-
+        System.out.println();
+        BinaryMaxHeap maxHeapify = new BinaryMaxHeap(
+                new int[]{1, 21, 14, 6, 10, 2, 5, 7, 8}
+        );
+        for (int i = 0; i < 8; i++) {
+            System.out.print(maxHeapify.remove() + ", ");
+        }
     }
 }
