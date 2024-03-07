@@ -1,4 +1,4 @@
-package March.algorithm2;
+package March.algorithm2.tree;
 
 public class TreeArray {
     // 이진트리는 배열로 표현이 가능하다
