@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.chat.config;
 
 import com.example.chat.SimpleChatHandler;
 import lombok.RequiredArgsConstructor;
